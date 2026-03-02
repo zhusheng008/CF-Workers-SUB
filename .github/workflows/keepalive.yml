@@ -1,0 +1,21 @@
+name: Keepalive Workflow
+
+on:
+  schedule:
+    - cron: '0 0 1 * *' # 每月1号 UTC 0:00 运行一次
+  workflow_dispatch:      # 允许你手动点击按钮测试
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Auto Commit to keep active
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit --allow-empty -m "Chore: keep GitHub Actions alive"
+          git push
